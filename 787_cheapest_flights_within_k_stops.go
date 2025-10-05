@@ -137,35 +137,5 @@ depthLoop:
 }
 
 func testCheapestFlightWithinKStops() {
-	fmt.Println(cheapestFlightWithinKStopsDijkstra(0, [][]int{{0, 1, 100}, {1, 2, 100}, {1, 3, 600}, {2, 3, 200}, {2, 0, 100}}, 0, 3, 1) == 700)
-}
-
-func cheapestFlightWithinKStopsDijkstra(n int, flights [][]int, src, dst, k int) int {
-	graph := make([]WeightEdge, 0)
-	for _, route := range flights {
-		graph = append(graph, WeightEdge{route[0], route[1], 1})
-	}
-
-	withinK := Dijkstra(graph, src)
-	citistWithinK := make(map[int]struct{})
-	for ct, dis := range withinK {
-		if dis <= k+1 {
-			citistWithinK[ct] = struct{}{}
-		}
-	}
-
-	if _, ok := citistWithinK[dst]; !ok {
-		return -1
-	}
-
-	newGraph := make([]WeightEdge, 0)
-	for _, route := range flights {
-		if _, ok := citistWithinK[route[0]]; ok {
-			if _, ok := citistWithinK[route[1]]; ok {
-				newGraph = append(newGraph, WeightEdge{route[0], route[1], route[2]})
-			}
-		}
-	}
-	rc := Dijkstra(newGraph, src)
-	return rc[dst]
+	//fmt.Println(cheapestFlightWithinKStopsDijkstra(0, [][]int{{0, 1, 100}, {1, 2, 100}, {1, 3, 600}, {2, 3, 200}, {2, 0, 100}}, 0, 3, 1) == 700)
 }

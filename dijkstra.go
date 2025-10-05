@@ -3,11 +3,10 @@ package main
 import (
 	"container/heap"
 	"fmt"
-	"math"
 )
 
 func TestDijkstra() {
-	graph := []WeightEdge{{0, 1, 2},
+	graph := [][]int{{0, 1, 2},
 		{0, 2, 6},
 		{1, 3, 5},
 		{2, 3, 8},
@@ -18,89 +17,54 @@ func TestDijkstra() {
 		{6, 5, 6}}
 
 	graph = appendReturnRoad(graph)
+	fmt.Println(DijkstraHeap(7, graph, 0, 0) == 0)
+	fmt.Println(DijkstraHeap(7, graph, 0, 1) == 2)
+	fmt.Println(DijkstraHeap(7, graph, 0, 2) == 6)
+	fmt.Println(DijkstraHeap(7, graph, 0, 3) == 7)
+	fmt.Println(DijkstraHeap(7, graph, 0, 4) == 17)
+	fmt.Println(DijkstraHeap(7, graph, 0, 5) == 22)
+	fmt.Println(DijkstraHeap(7, graph, 0, 6) == 19)
 
-	fmt.Println(graph)
-	rc := Dijkstra(graph, 0)
-	fmt.Println(rc)
-	fmt.Println(rc[0] == 0)
-	fmt.Println(rc[1] == 2)
-	fmt.Println(rc[2] == 6)
-	fmt.Println(rc[3] == 7)
-	fmt.Println(rc[4] == 17)
-	fmt.Println(rc[5] == 22)
-	fmt.Println(rc[6] == 19)
+	fmt.Println("DeepDijkstraHeap")
+	graph = [][]int{{0, 1, 100},
+		{1, 2, 100},
+		{1, 3, 600},
+		{2, 3, 200},
+		{2, 0, 100}}
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 1, 2) == 100)
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 2, 2) == 200)
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 3, 2) == 400)
+
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 1, 1) == 100)
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 2, 0) == -1)
+	fmt.Println(DeepDijkstraHeap(3, graph, 0, 3, 1) == 700)
+
+	fmt.Println("DeepDijkstraHeap")
+	graph = [][]int{{3, 4, 4}, {2, 5, 6}, {4, 7, 10}, {9, 6, 5}, {7, 4, 4}, {6, 2, 10},
+		{6, 8, 6}, {7, 9, 4}, {1, 5, 4}, {1, 0, 4}, {9, 7, 3}, {7, 0, 5}, {6, 5, 8},
+		{1, 7, 6}, {4, 0, 9}, {5, 9, 1}, {8, 7, 3}, {1, 2, 6}, {4, 1, 5}, {5, 2, 4},
+		{1, 9, 1}, {7, 8, 10}, {0, 4, 2}, {7, 2, 8}}
+
+	fmt.Println(DeepDijkstraHeap(10, graph, 6, 5, 7) == 8)
+	fmt.Println(DeepDijkstraHeap(10, graph, 6, 9, 7) == 9)
+	fmt.Println(DeepDijkstraHeap(10, graph, 6, 0, 7) == 14)
+
+	fmt.Println("DeepDijkstraHeap")
+	graph = [][]int{{1, 0, 5}, {2, 1, 5}, {3, 0, 2}, {1, 3, 2}, {4, 1, 1}, {2, 4, 1}}
+	fmt.Println(DeepDijkstraHeap(5, graph, 2, 0, 2) == 7)
+
+	fmt.Println("DeepDijkstraHeap")
+	graph = [][]int{{0, 1, 5}, {1, 2, 5}, {0, 3, 2}, {3, 1, 2}, {1, 4, 1}, {4, 2, 1}}
+	fmt.Println(DeepDijkstraHeap(5, graph, 0, 2, 2) == 7)
 }
 
-func appendReturnRoad(g []WeightEdge) []WeightEdge {
-	ng := make([]WeightEdge, 0)
+func appendReturnRoad(g [][]int) [][]int {
+	ng := make([][]int, 0)
 	for _, r := range g {
 		ng = append(ng, r)
-		ng = append(ng, WeightEdge{r.Dst, r.Src, r.Weight})
+		ng = append(ng, []int{r[1], r[0], r[2]})
 	}
 	return ng
-}
-
-type WeightEdge struct {
-	Src    int
-	Dst    int
-	Weight int
-}
-
-func Dijkstra(graph []WeightEdge, src int) map[int]int {
-	return DijkstraArray(graph, src)
-}
-
-func DijkstraArray(graph []WeightEdge, src int) map[int]int {
-	minDistance := make(map[int]struct{})
-	visitedNode := make(map[int]int)
-
-	// transfer group to map
-	fullConnection := make(map[int]map[int]int)
-	for _, w := range graph {
-		if _, ok := fullConnection[w.Src]; !ok {
-			fullConnection[w.Src] = make(map[int]int)
-		}
-		fullConnection[w.Src][w.Dst] = w.Weight
-	}
-
-	// cache node to src distance
-	visitedNode[src] = 0
-	// cache minimum distance info
-	minDistance[src] = struct{}{}
-
-	for {
-		// iterate the neighbor of minimum distance group
-		for s, _ := range minDistance {
-			for d, w := range fullConnection[s] {
-				//skip member of minimum distance group
-				if _, ok := minDistance[d]; ok {
-					continue
-				}
-				// update distance info
-				distance := visitedNode[s] + w
-				if v, ok := visitedNode[d]; !ok || v > distance {
-					visitedNode[d] = distance
-				}
-			}
-		}
-		// find the new smallest one
-		newMinimum := src
-		miniDistance := math.MaxInt
-		for d, w := range visitedNode {
-			if _, ok := minDistance[d]; ok {
-				continue
-			}
-			if w < miniDistance {
-				miniDistance = w
-				newMinimum = d
-			}
-		}
-		if newMinimum != src {
-			minDistance[newMinimum] = struct{}{}
-			continue
-		}
-		return visitedNode
-	}
 }
 
 type heapElement struct {
@@ -125,41 +89,97 @@ func (h *minimumHeap) Pop() any {
 	return rc
 }
 
-func DijkstraHeap(graph []WeightEdge, src int) map[int]int {
-	nodes := make(map[int]struct{})
-
-	// transfer group to map
+func DijkstraHeap(n int, graph [][]int, src, dst int) int {
+	// convert edge list to adjacency map
 	fullConnection := make(map[int]map[int]int)
 	for _, w := range graph {
-		if _, ok := fullConnection[w.Src]; !ok {
-			fullConnection[w.Src] = make(map[int]int)
+		if _, ok := fullConnection[w[0]]; !ok {
+			fullConnection[w[0]] = make(map[int]int)
 		}
-		fullConnection[w.Src][w.Dst] = w.Weight
-		nodes[w.Src] = struct{}{}
-		nodes[w.Dst] = struct{}{}
+		fullConnection[w[0]][w[1]] = w[2]
 	}
 
-	visitedNode := make(map[int]struct{})
-	nodeDistance := make(map[int]int)
+	// min-heap to select the next node with the smallest distance
 	toVisit := make(minimumHeap, 0)
 	heap.Init(&toVisit)
 	heap.Push(&toVisit, heapElement{value: 0, data: src})
 
+	// record visited nodes for pruning redundant paths
+	visitedNode := make(map[int]struct{})
+
 	for toVisit.Len() > 0 {
+		// get next node to visit
 		item := heap.Pop(&toVisit).(heapElement)
 		node := item.data.(int)
 
+		// find destination
+		if node == dst {
+			return item.value
+		}
+
+		//mark the node as visited
 		if _, ok := visitedNode[node]; ok {
 			continue
 		}
 		visitedNode[node] = struct{}{}
 
+		// check the neighbors of node, update the node need to visit
 		for n, d := range fullConnection[node] {
-			if nodeDistance[n] > nodeDistance[node]+d {
-				nodeDistance[n] = nodeDistance[node] + d
-				heap.Push(&toVisit, heapElement{value: nodeDistance[n], data: n})
-			}
+			heap.Push(&toVisit, heapElement{value: item.value + d, data: n})
 		}
 	}
-	return nodeDistance
+	return -1
+}
+
+type deepPath struct {
+	dst   int
+	depth int
+}
+
+func DeepDijkstraHeap(n int, graph [][]int, src int, dst int, depth int) int {
+	// convert edge list to adjacency map
+	fullConnection := make(map[int]map[int]int)
+	for _, w := range graph {
+		if _, ok := fullConnection[w[0]]; !ok {
+			fullConnection[w[0]] = make(map[int]int)
+		}
+		fullConnection[w[0]][w[1]] = w[2]
+	}
+
+	// min-heap to select the next node with the smallest distance
+	toVisit := make(minimumHeap, 0)
+	heap.Init(&toVisit)
+	heap.Push(&toVisit, heapElement{value: 0, data: deepPath{dst: src, depth: 0}})
+
+	// record the node and path depth for pruning
+	pruningMap := make(map[int]int)
+	for toVisit.Len() > 0 {
+		// get next node to visit
+		item := heap.Pop(&toVisit).(heapElement)
+		node := item.data.(deepPath).dst
+		dp := item.data.(deepPath).depth
+
+		// find the destination
+		if node == dst {
+			return item.value
+		}
+
+		// path depth check
+		if dp > depth {
+			continue
+		}
+
+		//Since we always process the smallest cost first with the min-heap,
+		//if the current node comes with a higher cost and deeper path, it’s invalid and should be discarded.
+		if v, ok := pruningMap[node]; ok && v <= dp {
+			continue
+		}
+		pruningMap[node] = dp
+
+		// check the neighbors of node, update the node need to visit
+		for n, d := range fullConnection[node] {
+			heap.Push(&toVisit, heapElement{value: item.value + d, data: deepPath{dst: n, depth: dp + 1}})
+		}
+	}
+	return -1
 }

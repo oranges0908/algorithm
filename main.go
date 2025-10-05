@@ -1,14 +1,17 @@
 package main
 
 func main() {
-	TestNextGreaterElement()
+	//TestLargestRectangleInHistogram()
+	//TestMonotoneIncreasingDigits()
+	//TestDailyTemperatures()
+	//TestNextGreaterElement()
 	//TestMaxArea()
 	//TestMonotonicArray()
 	//TestUniqueSubstringsInWraparoundString()
 	//TestRepeatedSubstringPattern()
 	//TestLargestPerimeterTriangle()
 	//TestLRUCache()
-	//TestDijkstra()
+	TestDijkstra()
 	//TestMedianFinder()
 	//TestMyQueue()
 	//TestMyStack()
