@@ -1,6 +1,7 @@
 package main
 
 func main() {
+	TestPacificAtlanticWaterFlow()
 	//TestLargestRectangleInHistogram()
 	//TestMonotoneIncreasingDigits()
 	//TestDailyTemperatures()
@@ -11,7 +12,7 @@ func main() {
 	//TestRepeatedSubstringPattern()
 	//TestLargestPerimeterTriangle()
 	//TestLRUCache()
-	TestDijkstra()
+	//TestDijkstra()
 	//TestMedianFinder()
 	//TestMyQueue()
 	//TestMyStack()
