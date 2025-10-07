@@ -1,7 +1,13 @@
 package main
 
 func main() {
-	TestPacificAtlanticWaterFlow()
+	TestLongestValidParentheses()
+	//TestValidParentheses()
+	//TestTrappingRainWater()
+	//TestSumOfSubArrayRanges()
+	//TestSumSubarrayMins()
+	//TestMaximalRectangle()
+	//TestPacificAtlanticWaterFlow()
 	//TestLargestRectangleInHistogram()
 	//TestMonotoneIncreasingDigits()
 	//TestDailyTemperatures()
