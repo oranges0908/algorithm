@@ -15,6 +15,29 @@ func TestLongestValidParentheses() {
 }
 
 func longestValidParentheses(s string) int {
+	l := 0
+	p := []int{}
+	for i, c := range s {
+		if c == ')' {
+			if len(p) > 0 && s[p[len(p)-1]] == '(' {
+				p = p[:len(p)-1]
+
+				r := i + 1
+				if len(p) > 0 {
+					r = i - p[len(p)-1]
+				}
+				if r > l {
+					l = r
+				}
+				continue
+			}
+		}
+		p = append(p, i)
+	}
+	return l
+}
+
+func longestValidParentheses1(s string) int {
 	minStack := list.New()
 	parenthesesStack := list.New()
 

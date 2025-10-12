@@ -28,7 +28,7 @@ func TestTaskHeap() {
 }
 
 func TestTaskManager() {
-	tm := Constructor([][]int{{1, 101, 10}, {2, 102, 20}, {3, 103, 15}}) // Initializes with three tasks for Users 1, 2, and 3.
+	tm := ConstructorTM([][]int{{1, 101, 10}, {2, 102, 20}, {3, 103, 15}}) // Initializes with three tasks for Users 1, 2, and 3.
 	fmt.Println(len(tm.TaskIDMap) == 3)
 
 	tm.Add(3, 1031, 5)
@@ -88,7 +88,7 @@ type TaskManager struct {
 	TaskIDMap map[int]*Task // 提供edit和remove要使用的index
 }
 
-func Constructor(tasks [][]int) TaskManager {
+func ConstructorTM(tasks [][]int) TaskManager {
 	ut := make(TaskHeap, 0)
 	heap.Init(&ut)
 	t := TaskManager{UIDTasks: &ut, TaskIDMap: make(map[int]*Task)}

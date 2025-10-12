@@ -1,7 +1,13 @@
 package main
 
 func main() {
-	TestLongestValidParentheses()
+	TestLFUCache()
+	//TestMaxNestingDepthOf2ValidParenthesesStrings()
+	//TestScoreOfParentheses()
+	//TestInsertions2BalanceParenthesesString()
+	//TestValidParenthesisString()
+	//TestRemoveInvalidParenthese()
+	//TestLongestValidParentheses()
 	//TestValidParentheses()
 	//TestTrappingRainWater()
 	//TestSumOfSubArrayRanges()
