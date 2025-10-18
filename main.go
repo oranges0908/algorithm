@@ -1,7 +1,18 @@
 package main
 
 func main() {
-	TestLFUCache()
+	TestTwoSum4()
+	//TestTrimBST()
+	//TestIncreasingBST2orderSearchTree()
+	//TestConvertBST2GreaterTree()
+	//TestFindModeInBST()
+	//TestMinimumAbsDifferenceBST()
+	//TestFindKthSmallestBST()
+	//TestSerializeDeserializeBST()
+	//TestConstructBSTFromPreorder()
+	//TestConvertSortedListToBST()
+	//TestValidateBinarySearch()
+	//TestLFUCache()
 	//TestMaxNestingDepthOf2ValidParenthesesStrings()
 	//TestScoreOfParentheses()
 	//TestInsertions2BalanceParenthesesString()
